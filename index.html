@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>明日方舟 · 基建模拟器</title>
+  <meta name="description" content="明日方舟基建模拟器 - 精确计算干员基建技能效率，支持全员精二，实时显示制造站、贸易站、发电站等设施数据">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 顶部导航栏 -->
+<header class="top-bar">
+  <div class="top-bar-left">
+    <div class="logo">
+      <span class="logo-icon">◈</span>
+      <span class="logo-text">RHODES ISLAND</span>
+      <span class="logo-sub">基建模拟器</span>
+    </div>
+  </div>
+  <div class="top-bar-center">
+    <div class="global-stats" id="globalStats">
+      <div class="stat-chip" title="全基建制造站平均效率">
+        <span class="stat-label">制造效率</span>
+        <span class="stat-value" id="statManuEff">—</span>
+      </div>
+      <div class="stat-chip" title="全基建贸易站平均效率">
+        <span class="stat-label">贸易效率</span>
+        <span class="stat-value" id="statTradeEff">—</span>
+      </div>
+      <div class="stat-chip" title="无人机充能速度">
+        <span class="stat-label">无人机</span>
+        <span class="stat-value" id="statDrone">—</span>
+      </div>
+      <div class="stat-chip" title="全局心情消耗减免">
+        <span class="stat-label">心情减免</span>
+        <span class="stat-value" id="statMood">—</span>
+      </div>
+      <div class="stat-chip power-chip" id="powerChip" title="发电量 / 总耗电量">
+        <span class="stat-label">电量负荷</span>
+        <span class="stat-value" id="statPower">—</span>
+      </div>
+    </div>
+  </div>
+  <div class="top-bar-right">
+    <button class="btn-icon btn-save-cfg" id="btnSaveConfig" title="另存为命名配置（可选；日常用「存A/B/C」或自动存档即可）">&#128190;</button>
+    <button class="btn-icon" id="btnShowConfigs" title="我的配置">&#128203;</button>
+    <button class="btn-icon" id="btnExport" title="导出配置">&#11015;</button>
+    <button class="btn-icon" id="btnImport" title="导入配置">&#11014;</button>
+    <button class="btn-icon" id="btnReset" title="重置所有配置">&#8635;</button>
+    <input type="file" id="importFile" accept=".json" style="display:none">
+  </div>
+</header>
+
+<!-- 配置序列抽屉 -->
+<div class="config-drawer" id="configDrawer" style="display:none">
+  <div class="config-drawer-inner">
+    <div class="config-drawer-header">
+      <span>💾 已保存的配置</span>
+      <button class="config-drawer-close" id="btnCloseDrawer">&times;</button>
+    </div>
+    <div class="config-list" id="configList"></div>
+    <div class="config-drawer-hint">第一条为自动记忆，将实时同步当前设置</div>
+  </div>
+</div>
+
+<!-- 主体布局 -->
+<div class="main-layout">
+
+  <!-- 左侧：设施面板 -->
+  <aside class="facilities-panel" id="facilitiesPanel">
+    <div class="panel-header">
+      <h2>基建设施</h2>
+      <div class="layout-config">
+        <span class="config-label">布局</span>
+        <div class="room-count-controls">
+          <label>制造 <select id="manuCount" class="count-select"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select></label>
+          <label>贸易 <select id="tradeCount" class="count-select"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></label>
+          <label>发电 <select id="powerCount" class="count-select"><option>1</option><option>2</option><option selected>3</option></select></label>
+          <label>宿舍 <select id="dormCount" class="count-select"><option>1</option><option>2</option><option>3</option><option selected>4</option></select></label>
+        </div>
+      </div>
+    </div>
+    <div class="facilities-list" id="facilitiesList">
+      <!-- 动态生成 -->
+    </div>
+  </aside>
+
+  <!-- 中间：拖拽目标区域（设施插槽详情） -->
+  <main class="detail-panel" id="detailPanel">
+    <div class="detail-placeholder" id="detailPlaceholder">
+      <div class="placeholder-icon">◈</div>
+      <p>点击左侧设施查看详情</p>
+      <p class="hint">或将干员拖拽到设施槽位</p>
+    </div>
+    <div class="facility-detail" id="facilityDetail" style="display:none">
+      <!-- 选中设施的详细信息 -->
+    </div>
+  </main>
+
+  <!-- 右侧：干员库 -->
+  <aside class="operators-panel" id="operatorsPanel">
+    <div class="panel-header">
+      <h2>干员</h2>
+      <div class="op-filter-row">
+        <input type="text" id="opSearch" class="op-search" placeholder="搜索干员...">
+        <label class="jay-toggle" title="关=精0摊贩经济（推荐）；开=精一市井之道+摊贩经济">
+          <input type="checkbox" id="jayElite2Toggle">
+          <span>孑精二</span>
+        </label>
+      </div>
+      <div class="op-filter-row">
+        <button class="filter-btn active" data-room="ALL">全部</button>
+        <button class="filter-btn" data-room="MANUFACTURE">制造</button>
+        <button class="filter-btn" data-room="TRADING">贸易</button>
+        <button class="filter-btn" data-room="POWER">发电</button>
+        <button class="filter-btn" data-room="DORMITORY">宿舍</button>
+        <button class="filter-btn" data-room="CONTROL">中枢</button>
+        <button class="filter-btn" data-room="HIRE">办公</button>
+        <button class="filter-btn" data-room="TRAINING">训练</button>
+        <button class="filter-btn" data-room="MEETING">会客</button>
+      </div>
+      <div class="op-filter-row">
+        <button class="rarity-btn active" data-rarity="ALL">全</button>
+        <button class="rarity-btn" data-rarity="6">★6</button>
+        <button class="rarity-btn" data-rarity="5">★5</button>
+        <button class="rarity-btn" data-rarity="4">★4</button>
+        <button class="rarity-btn" data-rarity="3">★3</button>
+        <button class="filter-btn" data-room="UNASSIGNED" id="btnUnassigned">未分配</button>
+      </div>
+    </div>
+    <div class="operators-list" id="operatorsList">
+      <!-- 动态生成 -->
+    </div>
+  </aside>
+
+</div>
+
+<!-- 干员技能悬浮提示 -->
+<div class="skill-tooltip" id="skillTooltip" style="display:none">
+  <div class="tooltip-header">
+    <span class="tooltip-op-name" id="ttOpName"></span>
+    <span class="tooltip-elite" id="ttElite"></span>
+  </div>
+  <div class="tooltip-skills" id="ttSkills"></div>
+</div>
+
+<!-- 确认弹窗 -->
+<div class="modal-overlay" id="modalOverlay" style="display:none">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">确认操作</div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="btn-cancel" id="modalCancel">取消</button>
+      <button class="btn-confirm" id="modalConfirm">确认</button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
