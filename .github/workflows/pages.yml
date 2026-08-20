@@ -28,6 +28,8 @@ jobs:
         run: |
           mkdir _site
           cp index.html app.js engine.js data.js style.css _site/
+          mkdir -p _site/assets
+          cp -r assets/. _site/assets/ 2>/dev/null || true
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

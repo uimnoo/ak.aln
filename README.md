@@ -2,11 +2,11 @@
 
 纯前端基建排布工具：拖拽进驻、效率对照、满配峰值提示、单设施存班换班、常见策略一键布置。
 
-**在线演示：** https://uimnoo.github.io/ak.aln/
-
+**作者：** [uimnoo](https://github.com/uimnoo)（B 站同名）  
+**在线演示：** https://uimnoo.github.io/ak.aln/  
 **仓库：** https://github.com/uimnoo/ak.aln
 
-> 非官方工具，数据参考 PRTS / 游戏内描述；边角技能欢迎提 Issue。
+> 非官方工具。基建技能数据参考 **PRTS**，并经作者本人账号实测核对；边角技能欢迎提 Issue。
 
 ---
 

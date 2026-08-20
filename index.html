@@ -46,6 +46,7 @@
     </div>
   </div>
   <div class="top-bar-right">
+    <button class="btn-icon btn-author" id="btnAuthor" title="关于作者">作者</button>
     <button class="btn-icon btn-save-cfg" id="btnSaveConfig" title="另存为命名配置（可选；日常用「存A/B/C」或自动存档即可）">&#128190;</button>
     <button class="btn-icon" id="btnShowConfigs" title="我的配置">&#128203;</button>
     <button class="btn-icon" id="btnExport" title="导出配置">&#11015;</button>
@@ -146,6 +147,47 @@
     <span class="tooltip-elite" id="ttElite"></span>
   </div>
   <div class="tooltip-skills" id="ttSkills"></div>
+</div>
+
+<!-- 作者 / 引流欢迎弹窗 -->
+<div class="welcome-overlay" id="welcomeOverlay" style="display:none" aria-hidden="true">
+  <div class="welcome-modal" role="dialog" aria-labelledby="welcomeTitle">
+    <button type="button" class="welcome-close" id="welcomeClose" title="关闭" aria-label="关闭">×</button>
+    <div class="welcome-head">
+      <div class="welcome-kicker">RHODES ISLAND · 基建模拟器</div>
+      <h2 id="welcomeTitle" class="welcome-title">作者 <span>uimnoo</span></h2>
+      <p class="welcome-lead">自用基建排布工具开源了：拖拽进驻、满配峰值、存班换班、策略一键——欢迎试用，也欢迎来 B 站催更 / 提需求。</p>
+    </div>
+    <div class="welcome-cards">
+      <figure class="welcome-card">
+        <img src="assets/author-arknights.png" alt="明日方舟账号 Mei#7223" loading="lazy">
+        <figcaption>
+          <b>明日方舟</b>
+          <span>Mei#7223 · UID 85070150</span>
+        </figcaption>
+      </figure>
+      <figure class="welcome-card">
+        <img src="assets/author-bilibili.png" alt="B站账号 uimnoo" loading="lazy">
+        <figcaption>
+          <b>B 站</b>
+          <span>uimnoo · 搜用户即可找到</span>
+        </figcaption>
+      </figure>
+    </div>
+    <ul class="welcome-points">
+      <li>开源仓库随时可星标 / 提 Issue：<a href="https://github.com/uimnoo/ak.aln" target="_blank" rel="noopener">github.com/uimnoo/ak.aln</a></li>
+      <li>数据参考 <b>PRTS</b> 基建技能描述，并经作者本人账号实测核对</li>
+      <li>非官方工具，仅供学习交流；边角技能欢迎反馈</li>
+    </ul>
+    <div class="welcome-actions">
+      <a class="welcome-btn welcome-btn-ghost" href="https://github.com/uimnoo/ak.aln" target="_blank" rel="noopener">打开仓库</a>
+      <a class="welcome-btn welcome-btn-ghost" href="https://search.bilibili.com/upuser?keyword=uimnoo" target="_blank" rel="noopener">去 B 站找我</a>
+      <button type="button" class="welcome-btn welcome-btn-primary" id="welcomeDismiss">开始排布</button>
+    </div>
+    <label class="welcome-hide-row">
+      <input type="checkbox" id="welcomeHideToday"> 今日不再弹出
+    </label>
+  </div>
 </div>
 
 <!-- 确认弹窗 -->

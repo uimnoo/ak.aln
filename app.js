@@ -4386,7 +4386,62 @@ function init() {
     const t = localStorage.getItem(CONFIG_AUTO_TIME);
     showToast(t ? `已恢复自动记忆（${t}）` : '已恢复自动记忆', 'info', 2500);
   }
+  initWelcomeModal();
   console.log(`[基建模拟器] 加载完成 - ${Object.keys(BUILDING_DATA.chars).length} 名干员`);
+}
+
+const WELCOME_HIDE_KEY = 'ak_welcome_hide_day';
+
+function shouldShowWelcomeModal() {
+  try {
+    const day = localStorage.getItem(WELCOME_HIDE_KEY);
+    const today = new Date().toISOString().slice(0, 10);
+    if (day === today) return false;
+  } catch (e) {}
+  return true;
+}
+
+function hideWelcomeModal({ rememberToday = false } = {}) {
+  const overlay = document.getElementById('welcomeOverlay');
+  if (!overlay) return;
+  overlay.style.display = 'none';
+  overlay.setAttribute('aria-hidden', 'true');
+  if (rememberToday) {
+    try {
+      localStorage.setItem(WELCOME_HIDE_KEY, new Date().toISOString().slice(0, 10));
+    } catch (e) {}
+  }
+}
+
+function showWelcomeModal() {
+  const overlay = document.getElementById('welcomeOverlay');
+  if (!overlay) return;
+  overlay.style.display = 'flex';
+  overlay.setAttribute('aria-hidden', 'false');
+  const cb = document.getElementById('welcomeHideToday');
+  if (cb) cb.checked = false;
+}
+
+function initWelcomeModal() {
+  const overlay = document.getElementById('welcomeOverlay');
+  if (!overlay) return;
+
+  const dismiss = () => {
+    const hideToday = !!document.getElementById('welcomeHideToday')?.checked;
+    hideWelcomeModal({ rememberToday: hideToday });
+  };
+
+  document.getElementById('welcomeClose')?.addEventListener('click', dismiss);
+  document.getElementById('welcomeDismiss')?.addEventListener('click', dismiss);
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) dismiss();
+  });
+  document.getElementById('btnAuthor')?.addEventListener('click', () => showWelcomeModal());
+
+  if (shouldShowWelcomeModal()) {
+    // 稍晚弹出，避免挡住首屏恢复提示
+    setTimeout(() => showWelcomeModal(), 400);
+  }
 }
 
 // DOM 加载完毕后初始化
