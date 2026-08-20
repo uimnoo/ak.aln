@@ -1050,14 +1050,16 @@ function createFacilityCard(roomType, roomIdx, room, power) {
     <div class="facility-card-header">
       <div class="facility-type-icon icon-bg-${roomType}">${meta.icon}</div>
       <div class="facility-info">
-        <div class="facility-name">${nameLabel} ${productLabel}</div>
-        <div class="facility-meta">
-          <span class="facility-level">Lv.${room.level}</span>
-          ${effStr ? `<span class="facility-eff">${effStr}</span>` : ''}
-          <span style="font-size:9px;color:var(--text-muted);flex-shrink:0">${occupied}/${cap}</span>
+        <div class="facility-name-row">
+          <div class="facility-name">${nameLabel} ${productLabel}</div>
           ${roomType === 'DORMITORY' && occupied
             ? `<button type="button" class="facility-clear-mini" data-clear-dorm="${roomIdx}" title="清空本间宿舍">清空</button>`
             : ''}
+        </div>
+        <div class="facility-meta">
+          <span class="facility-level">Lv.${room.level}</span>
+          ${effStr ? `<span class="facility-eff">${effStr}</span>` : ''}
+          <span class="facility-cap">${occupied}/${cap}</span>
         </div>
       </div>
     </div>
