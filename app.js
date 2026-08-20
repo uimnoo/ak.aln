@@ -4427,6 +4427,8 @@ function applyAuthorPresetPayload(payload) {
   if (!deserializeState(typeof state === 'string' ? state : JSON.stringify(state))) {
     return false;
   }
+  // 加载作者配置时关掉欢迎弹窗，避免挡住顶栏反馈
+  hideWelcomeModal({ rememberToday: false });
   selectedFacility = null;
   document.getElementById('detailPlaceholder').style.display = '';
   document.getElementById('facilityDetail').style.display = 'none';

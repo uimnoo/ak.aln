@@ -78,7 +78,7 @@ html, body {
   display: flex;
   align-items: center;
   padding: 0 20px;
-  z-index: 100;
+  z-index: 500;
   gap: 16px;
 }
 
@@ -2492,7 +2492,7 @@ html, body {
   font-size: 13px;
   color: var(--text-primary);
   box-shadow: var(--shadow-float);
-  z-index: 400;
+  z-index: 600;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
 }
