@@ -62,14 +62,8 @@ python -m http.server 8080
 
 ## 技术栈
 
-- 纯静态：`index.html` + `app.js` + `engine.js` + `data.js` + `style.css`
+- 纯静态：`index.html` + `app.js` + `engine.js` + `data.js` + `style.css` + `author-preset.js`
 - 干员头像走公开 CDN 镜像，无后端
-
----
-
-## B 站宣传文案
-
-可复制内容见 [`docs/BILIBILI.md`](docs/BILIBILI.md)。
 
 ---
 
