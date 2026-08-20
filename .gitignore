@@ -21,3 +21,11 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+
+# local debug / crops
+_id_crops/
+*.txt
+!README.md
+!docs/**/*.md
+.DS_Store
+Thumbs.db
