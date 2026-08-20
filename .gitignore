@@ -26,6 +26,9 @@ TestResults.xml
 _id_crops/
 *.txt
 !README.md
-!docs/**/*.md
 .DS_Store
 Thumbs.db
+
+# 私人文案，不上传公开仓库
+docs/BILIBILI.md
+docs/
