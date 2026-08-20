@@ -89,6 +89,12 @@ html, body {
   flex-shrink: 0;
 }
 
+.top-bar-right {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: min(520px, 48%);
+}
+
 .top-bar-center {
   flex: 1;
   display: flex;
@@ -219,6 +225,69 @@ html, body {
   border-color: var(--accent);
   color: var(--accent);
   box-shadow: var(--accent-glow);
+}
+
+.btn-icon.btn-text {
+  width: auto;
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.btn-tip-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.btn-tip {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 200;
+  width: min(320px, 70vw);
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(245, 166, 35, 0.45);
+  background: #121a2b;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  color: var(--text-secondary, #8fa8c8);
+  font-size: 12px;
+  line-height: 1.55;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.btn-tip b {
+  color: var(--text-primary, #e8edf5);
+}
+
+.btn-tip > b {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--accent, #f5a623);
+  font-size: 13px;
+}
+
+.btn-tip p {
+  margin: 0 0 6px;
+}
+
+.btn-tip p:last-child {
+  margin-bottom: 0;
+}
+
+.btn-tip-wrap:hover .btn-tip,
+.btn-tip-wrap:focus-within .btn-tip {
+  display: block;
+}
+
+.btn-author-cfg {
+  color: var(--accent, #f5a623) !important;
+  border-color: rgba(245, 166, 35, 0.4) !important;
 }
 
 /* ============================================================
@@ -2194,10 +2263,10 @@ html, body {
   cursor: pointer;
 }
 .btn-author {
-  font-size: 11px !important;
+  font-size: 12px !important;
   font-weight: 700 !important;
   width: auto !important;
-  padding: 0 8px !important;
+  padding: 0 10px !important;
   color: var(--accent, #f5a623) !important;
 }
 @media (max-width: 860px) {

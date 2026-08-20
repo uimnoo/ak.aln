@@ -3751,6 +3751,16 @@ function renderAll() {
 // ============================================================
 const ROOM_SHIFTS_KEY = 'ak_base_room_shifts';
 const SHIFT_SETS = ['A', 'B', 'C'];
+/** 作者懒人排布：制造站1 三班语义 */
+const AUTHOR_SHIFT_LABELS = {
+  'MANUFACTURE:0': { A: '通用', B: '搓玉', C: '经验' },
+};
+
+function getShiftSetLabel(roomType, roomIdx, which) {
+  const map = AUTHOR_SHIFT_LABELS[shiftRoomKey(roomType, roomIdx)];
+  const name = map?.[which];
+  return name ? `${which}·${name}` : which;
+}
 /**
  * @type {{
  *   version: 5,
@@ -3956,15 +3966,16 @@ function getRoomShiftHoursText(roomType, roomIdx, stats) {
   return minH >= 100 ? '99+' : minH.toFixed(1);
 }
 
-function shiftSetTipHtml(which, list, { isDel = false } = {}) {
+function shiftSetTipHtml(which, list, { isDel = false, label = null } = {}) {
   const n = list.length;
   const names = list.map(id => BUILDING_DATA.chars[id]?.name || id);
+  const tag = label || `${which}班`;
   const head = isDel
-    ? (n ? `清空本站 ${which}班` : `${which}班为空`)
-    : (n ? `本站 ${which}班 · ${n} 人` : `本站 ${which}班为空`);
+    ? (n ? `清空本站 ${tag}` : `${tag}为空`)
+    : (n ? `本站 ${tag} · ${n} 人` : `本站 ${tag}为空`);
   const sub = isDel
     ? (n ? '不影响当前进驻' : '无需删除')
-    : (n ? '可与其它组重复干员；换班时再判冲突' : `点击把当前进驻存为 ${which}班`);
+    : (n ? '可与其它组重复干员；换班时再判冲突' : `点击把当前进驻存为 ${tag}`);
   const body = n
     ? `<div class="shift-tip-names">${names.map(nm => `<span class="shift-tip-chip">${nm}</span>`).join('')}</div>`
     : `<div class="shift-tip-empty">暂无干员</div>`;
@@ -4008,19 +4019,21 @@ function buildRoomShiftBarHtml(roomType, roomIdx, stats) {
   if (roomType === 'DORMITORY') return '';
   const data = getRoomShiftData(roomType, roomIdx);
   const active = data.active;
+  const activeLabel = getShiftSetLabel(roomType, roomIdx, active);
   const hours = getRoomShiftHoursText(roomType, roomIdx, stats);
   const saveBtns = SHIFT_SETS.map(s => {
     const list = (data[s] || []).filter(Boolean);
     const n = list.length;
     const delDis = n ? '' : ' disabled';
+    const tag = getShiftSetLabel(roomType, roomIdx, s);
     return `<span class="room-shift-set">
-      <button type="button" class="room-shift-btn" data-shift-save="${s}" data-shift-tip="save">存${s}${n ? `(${n})` : ''}</button>
-      <button type="button" class="room-shift-btn room-shift-btn-del" data-shift-clear="${s}" data-shift-tip="del"${delDis}>删${s}</button>
+      <button type="button" class="room-shift-btn" data-shift-save="${s}" data-shift-tip="save">存${tag}${n ? `(${n})` : ''}</button>
+      <button type="button" class="room-shift-btn room-shift-btn-del" data-shift-clear="${s}" data-shift-tip="del"${delDis}>删${tag}</button>
     </span>`;
   }).join('');
   return `
     <div class="room-shift-bar" data-room-type="${roomType}" data-room-idx="${roomIdx}">
-      <span class="room-shift-badge">当前 ${active}班</span>
+      <span class="room-shift-badge">当前 ${activeLabel}</span>
       <span class="room-shift-hours">还可约 ${hours}h</span>
       ${saveBtns}
       <button type="button" class="room-shift-btn room-shift-btn-swap" data-shift-swap>换班</button>
@@ -4041,7 +4054,7 @@ function saveSelectedRoomShift(which) {
   persistRoomShifts();
   autoSave();
   const label = `${ROOM_META[roomType]?.name || roomType}${engine.layout[roomType].length > 1 ? roomIdx + 1 : ''}`;
-  showToast(`${label}：已存本站 ${which}班（${data[which].length} 人）· 已自动存档`, 'success');
+  showToast(`${label}：已存本站 ${getShiftSetLabel(roomType, roomIdx, which)}（${data[which].length} 人）· 已自动存档`, 'success');
   renderDetailPanel();
 }
 
@@ -4199,6 +4212,7 @@ function bindRoomShiftBarEvents(detailRoot) {
       const list = (data[which] || []).filter(Boolean);
       const html = shiftSetTipHtml(which, list, {
         isDel: btn.getAttribute('data-shift-tip') === 'del',
+        label: getShiftSetLabel(roomType, roomIdx, which),
       });
       showShiftHoverTip(e.clientX, e.clientY, html);
     };
@@ -4335,6 +4349,7 @@ function renderConfigList() {
         </div>
         <div class="config-item-actions">
           <button class="config-btn config-btn-load" onclick="loadAutoSave()">&#9654; 加载</button>
+          <button class="config-btn config-btn-del" onclick="clearAutoSave()" title="清除自动记忆">&#128465;</button>
         </div>
       </div>`;
   }
@@ -4357,6 +4372,18 @@ function renderConfigList() {
 
 window.loadConfig = loadConfig;
 window.deleteConfig = deleteConfig;
+window.clearAutoSave = function() {
+  if (!localStorage.getItem(CONFIG_AUTO_KEY)) {
+    showToast('没有自动记忆', 'info');
+    return;
+  }
+  showModal('清除自动记忆', '确定清除浏览器里的自动记忆？不会删除下方的命名配置。', () => {
+    localStorage.removeItem(CONFIG_AUTO_KEY);
+    localStorage.removeItem(CONFIG_AUTO_TIME);
+    renderConfigList();
+    showToast('已清除自动记忆', 'success');
+  });
+};
 window.loadAutoSave = function() {
   const raw = localStorage.getItem(CONFIG_AUTO_KEY);
   if (!raw) return;
@@ -4372,6 +4399,100 @@ window.loadAutoSave = function() {
 // ============================================================
 // 初始化
 // ============================================================
+function countAssignedOperators(layout) {
+  if (!layout || typeof layout !== 'object') return 0;
+  let n = 0;
+  for (const rooms of Object.values(layout)) {
+    if (!Array.isArray(rooms)) continue;
+    for (const room of rooms) {
+      n += (room?.operators || []).filter(Boolean).length;
+    }
+  }
+  return n;
+}
+
+function applyAuthorPresetPayload(payload) {
+  let data;
+  try {
+    data = typeof payload === 'string' ? JSON.parse(payload) : payload;
+  } catch (e) {
+    return false;
+  }
+  // 兼容包一层 { name, data } 或直接 serializeState
+  const state = data?.data && data.data.layout ? data.data : data;
+  if (!state || !state.layout) {
+    showToast('作者配置尚未收录完整排布，请先导出后发给我写入', 'info', 4500);
+    return false;
+  }
+  if (!deserializeState(typeof state === 'string' ? state : JSON.stringify(state))) {
+    return false;
+  }
+  selectedFacility = null;
+  document.getElementById('detailPlaceholder').style.display = '';
+  document.getElementById('facilityDetail').style.display = 'none';
+  renderAll();
+  const ops = countAssignedOperators(engine.layout);
+  showToast(
+    ops
+      ? `已加载作者配置（uimnoo · ${ops} 人进驻）`
+      : '已加载作者配置（布局为空）',
+    ops ? 'success' : 'info',
+    3200
+  );
+  return true;
+}
+
+async function loadAuthorPreset() {
+  // file:// 下 fetch JSON 常失败，优先用内嵌的 author-preset.js
+  if (window.AUTHOR_PRESET_DATA) {
+    if (!applyAuthorPresetPayload(window.AUTHOR_PRESET_DATA)) {
+      showToast('作者配置格式无效', 'error');
+    }
+    return;
+  }
+  try {
+    const res = await fetch(`assets/author-preset.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!applyAuthorPresetPayload(data)) {
+      showToast('作者配置格式无效', 'error');
+    }
+  } catch (e) {
+    console.warn('[author-preset]', e);
+    showToast('未找到作者配置（请确认已加载 author-preset.js）', 'error', 4000);
+  }
+}
+
+// 作者本机：带 ?dumpAuthor=1 打开页面时，把当前自动存档下载为 author-preset.json
+function maybeDumpAuthorPreset() {
+  if (!/[?&]dumpAuthor=1(?:&|$)/.test(location.search)) return;
+  const raw = localStorage.getItem(CONFIG_AUTO_KEY);
+  if (!raw) {
+    showToast('当前没有可导出的自动存档', 'error');
+    return;
+  }
+  let parsed;
+  try { parsed = JSON.parse(raw); } catch (e) { parsed = null; }
+  const ops = countAssignedOperators(parsed?.layout);
+  const bundle = {
+    name: 'uimnoo 懒人排布',
+    author: 'uimnoo',
+    note: '制造站1：A通用 / B搓玉 / C经验；搓玉时通用↔搓玉，练经验时通用↔经验',
+    shiftLabels: AUTHOR_SHIFT_LABELS,
+    exportedAt: new Date().toISOString(),
+    operatorCount: ops,
+    data: parsed,
+  };
+  const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'author-preset.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(ops ? `已下载作者预设（${ops} 人）` : '已下载（进驻人数为 0，请确认打开的是有排布的页面）', ops ? 'success' : 'info', 4500);
+}
+
 function init() {
   bindEvents();
   // 尝试自动恢复上次记忆的状态
@@ -4389,6 +4510,10 @@ function init() {
     showToast(t ? `已恢复自动记忆（${t}）` : '已恢复自动记忆', 'info', 2500);
   }
   initWelcomeModal();
+  document.getElementById('btnAuthorConfig')?.addEventListener('click', () => {
+    loadAuthorPreset();
+  });
+  maybeDumpAuthorPreset();
   console.log(`[基建模拟器] 加载完成 - ${Object.keys(BUILDING_DATA.chars).length} 名干员`);
 }
 

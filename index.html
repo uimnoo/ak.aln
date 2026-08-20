@@ -46,12 +46,21 @@
     </div>
   </div>
   <div class="top-bar-right">
-    <button class="btn-icon btn-author" id="btnAuthor" title="关于作者">作者</button>
-    <button class="btn-icon btn-save-cfg" id="btnSaveConfig" title="另存为命名配置（可选；日常用「存A/B/C」或自动存档即可）">&#128190;</button>
-    <button class="btn-icon" id="btnShowConfigs" title="我的配置">&#128203;</button>
-    <button class="btn-icon" id="btnExport" title="导出配置">&#11015;</button>
-    <button class="btn-icon" id="btnImport" title="导入配置">&#11014;</button>
-    <button class="btn-icon" id="btnReset" title="重置所有配置">&#8635;</button>
+    <button type="button" class="btn-icon btn-text btn-author" id="btnAuthor" title="关于作者 uimnoo">作者 uimnoo</button>
+    <div class="btn-tip-wrap">
+      <button type="button" class="btn-icon btn-text btn-author-cfg" id="btnAuthorConfig" aria-describedby="authorCfgTip">作者配置</button>
+      <div class="btn-tip" id="authorCfgTip" role="tooltip">
+        <b>uimnoo 懒人排布</b>
+        <p>制造站 1 常备三班：<b>A 通用</b> · <b>B 搓玉</b> · <b>C 经验</b>。</p>
+        <p>要搓玉时，在「通用 ↔ 搓玉」之间换班；材料不够改练经验时，改走「通用 ↔ 经验」。</p>
+        <p>通用队当枢纽，少动人、少想排班。</p>
+      </div>
+    </div>
+    <button type="button" class="btn-icon btn-text" id="btnSaveConfig" title="另存为命名配置（可选；日常用存班或自动存档即可）">另存</button>
+    <button type="button" class="btn-icon btn-text" id="btnShowConfigs" title="查看并加载已保存的配置">我的配置</button>
+    <button type="button" class="btn-icon btn-text" id="btnExport" title="导出当前布局与换班为 JSON">导出</button>
+    <button type="button" class="btn-icon btn-text" id="btnImport" title="从 JSON 导入布局与换班">导入</button>
+    <button type="button" class="btn-icon btn-text" id="btnReset" title="清空全部干员分配">重置</button>
     <input type="file" id="importFile" accept=".json" style="display:none">
   </div>
 </header>
@@ -218,6 +227,7 @@
 
 <script src="data.js"></script>
 <script src="engine.js"></script>
+<script src="author-preset.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

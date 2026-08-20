@@ -1,0 +1,339 @@
+{
+  "name": "uimnoo 懒人排布",
+  "author": "uimnoo",
+  "note": "制造站1：A通用 / B搓玉 / C经验；搓玉时通用↔搓玉，练经验时通用↔经验",
+  "shiftLabels": {
+    "MANUFACTURE:0": {
+      "A": "通用",
+      "B": "搓玉",
+      "C": "经验"
+    }
+  },
+  "exportedAt": "2026-08-21T02:18:00+08:00",
+  "source": "arknights-base-1787249889240.json",
+  "operatorCount": 28,
+  "data": {
+    "layout": {
+      "CONTROL": [
+        {
+          "level": 5,
+          "operators": [
+            "char_456_ash",
+            "char_457_blitz",
+            "char_459_tachak",
+            "char_458_rfrost",
+            "char_4132_ascln"
+          ]
+        }
+      ],
+      "MANUFACTURE": [
+        {
+          "level": 3,
+          "operators": [
+            "char_336_folivo",
+            "char_190_clour",
+            "char_485_pallas"
+          ],
+          "product": "ORUNDUM"
+        },
+        {
+          "level": 3,
+          "operators": [
+            "char_1042_phatm2",
+            "char_4230_mcnist",
+            "char_4141_marcil"
+          ],
+          "product": "EXP"
+        },
+        {
+          "level": 3,
+          "operators": [
+            "char_1039_thorn2",
+            "char_4106_bryota",
+            "char_237_gravel"
+          ],
+          "product": "GOLD"
+        },
+        {
+          "level": 3,
+          "operators": [
+            "char_243_waaifu",
+            "char_4054_malist",
+            "char_446_aroma"
+          ],
+          "product": "GOLD"
+        }
+      ],
+      "TRADING": [
+        {
+          "level": 3,
+          "operators": [
+            "char_4203_kichi",
+            "char_103_angel",
+            "char_4193_lemuen"
+          ],
+          "product": "ORUNDUM"
+        },
+        {
+          "level": 3,
+          "operators": [
+            "char_486_takila",
+            "char_254_vodfox",
+            "char_214_kafka"
+          ],
+          "product": "GOLD"
+        }
+      ],
+      "POWER": [
+        {
+          "level": 3,
+          "operators": [
+            "char_1027_greyy2"
+          ]
+        },
+        {
+          "level": 3,
+          "operators": []
+        },
+        {
+          "level": 3,
+          "operators": []
+        }
+      ],
+      "DORMITORY": [
+        {
+          "level": 5,
+          "operators": []
+        },
+        {
+          "level": 5,
+          "operators": []
+        },
+        {
+          "level": 5,
+          "operators": []
+        },
+        {
+          "level": 5,
+          "operators": [
+            "char_4143_sensi"
+          ]
+        }
+      ],
+      "HIRE": [
+        {
+          "level": 3,
+          "operators": [
+            "char_4235_thumpy"
+          ]
+        }
+      ],
+      "TRAINING": [
+        {
+          "level": 3,
+          "operators": []
+        }
+      ],
+      "MEETING": [
+        {
+          "level": 3,
+          "operators": [
+            "char_4087_ines",
+            "char_4142_laios"
+          ]
+        }
+      ]
+    },
+    "moods": {
+      "char_4230_mcnist": 24,
+      "char_4100_caper": 24,
+      "char_243_waaifu": 24,
+      "char_336_folivo": 24
+    },
+    "jayElite2": false,
+    "roomShifts": {
+      "version": 5,
+      "rooms": {
+        "TRADING:1": {
+          "active": "B",
+          "A": [
+            "char_4032_provs",
+            "char_427_vigil",
+            "char_4037_demetr"
+          ],
+          "B": [
+            "char_486_takila",
+            "char_254_vodfox",
+            "char_214_kafka"
+          ],
+          "C": []
+        },
+        "TRADING:0": {
+          "active": "B",
+          "A": [
+            "char_154_morgan",
+            "char_112_siege",
+            "char_1019_siege2"
+          ],
+          "B": [
+            "char_4203_kichi",
+            "char_103_angel",
+            "char_4193_lemuen"
+          ],
+          "C": []
+        },
+        "MANUFACTURE:0": {
+          "active": "B",
+          "A": [
+            "char_163_hpsts",
+            "char_381_bubble",
+            "char_242_otter"
+          ],
+          "B": [
+            "char_336_folivo",
+            "char_190_clour",
+            "char_485_pallas"
+          ],
+          "C": [
+            "char_180_amgoat",
+            "char_183_skgoat",
+            "char_348_ceylon"
+          ]
+        },
+        "MANUFACTURE:2": {
+          "active": "B",
+          "A": [
+            "char_385_finlpp",
+            "char_400_weedy",
+            "char_416_zumama"
+          ],
+          "B": [
+            "char_237_gravel",
+            "char_1039_thorn2",
+            "char_4106_bryota"
+          ],
+          "C": [
+            "char_243_waaifu",
+            "char_4054_malist",
+            "char_446_aroma"
+          ]
+        },
+        "MANUFACTURE:1": {
+          "active": "B",
+          "A": [
+            "char_1502_crosly",
+            "char_241_panda",
+            "char_159_peacok"
+          ],
+          "B": [
+            "char_1042_phatm2",
+            "char_4230_mcnist",
+            "char_4141_marcil"
+          ],
+          "C": []
+        },
+        "MANUFACTURE:3": {
+          "active": "C",
+          "A": [
+            "char_385_finlpp",
+            "char_400_weedy",
+            "char_416_zumama"
+          ],
+          "B": [
+            "char_237_gravel",
+            "char_1039_thorn2",
+            "char_4106_bryota"
+          ],
+          "C": [
+            "char_243_waaifu",
+            "char_4054_malist",
+            "char_446_aroma"
+          ]
+        },
+        "DORMITORY:0": {
+          "active": "A",
+          "A": [],
+          "B": [],
+          "C": []
+        },
+        "DORMITORY:1": {
+          "active": "A",
+          "A": [],
+          "B": [],
+          "C": []
+        },
+        "DORMITORY:2": {
+          "active": "A",
+          "A": [],
+          "B": [],
+          "C": []
+        },
+        "DORMITORY:3": {
+          "active": "A",
+          "A": [],
+          "B": [],
+          "C": []
+        },
+        "POWER:1": {
+          "active": "A",
+          "A": [],
+          "B": [],
+          "C": []
+        },
+        "POWER:0": {
+          "active": "A",
+          "A": [],
+          "B": [],
+          "C": []
+        },
+        "POWER:2": {
+          "active": "A",
+          "A": [],
+          "B": [],
+          "C": []
+        },
+        "HIRE:0": {
+          "active": "A",
+          "A": [
+            "char_4235_thumpy"
+          ],
+          "B": [
+            "char_4202_haruka"
+          ],
+          "C": []
+        },
+        "TRAINING:0": {
+          "active": "A",
+          "A": [],
+          "B": [],
+          "C": []
+        },
+        "CONTROL:0": {
+          "active": "A",
+          "A": [
+            "char_456_ash",
+            "char_457_blitz",
+            "char_459_tachak",
+            "char_458_rfrost",
+            "char_4132_ascln"
+          ],
+          "B": [],
+          "C": []
+        },
+        "MEETING:0": {
+          "active": "A",
+          "A": [
+            "char_4087_ines",
+            "char_4142_laios"
+          ],
+          "B": [
+            "char_4100_caper",
+            "char_4214_cairn"
+          ],
+          "C": []
+        }
+      }
+    },
+    "savedAt": 1787249889240
+  }
+}
